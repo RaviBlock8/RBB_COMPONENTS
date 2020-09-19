@@ -1,17 +1,42 @@
 import React, { Component } from "react";
-import { View, Image, ScrollView, Dimensions, Animated } from "react-native";
+import {
+  View,
+  Image,
+  ScrollView,
+  Dimensions,
+  Animated,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+} from "react-native";
 import CarousleItem from "../carouselItem/CarousleItem";
+import CarouselItem2 from "../carouselItem/CarouselItem2";
+import CarouselItem3 from "../carouselItem/CarouselItem3";
+import CarouselItem4 from "../carouselItem/CarouselItem4";
+import CarouselItem5 from "../carouselItem/CarouselItem5";
+import CarouselItem6 from "../carouselItem/CarouselItem6";
+//width of my phone window without that soft navbar in bottom
+const { width, height } = Dimensions.get("window");
 
-//width of my phone window
-const { width } = Dimensions.get("window");
+const dummyData = [1, 2, 3, 4, 5, 6];
 
-const photos = [
-  { uri: "https://cdn.skillflow.io/resources/img/skillflowninja.png" },
-  { uri: "https://mileung.com/static/media/me.cd114855.png" },
-  { uri: "https://cdn.skillflow.io/resources/img/skillflowninja.png" },
-  { uri: "https://mileung.com/static/media/me.cd114855.png" },
-  { uri: "https://cdn.skillflow.io/resources/img/skillflowninja.png" },
-];
+const Heading = () => {
+  return (
+    <View style={styles.HeaderContainer}>
+      <View style={styles.Header}>
+        <Text style={styles.headerText}>Contracts{"   "}</Text>
+        <View style={styles.contractAmount}>
+          <Text style={{ fontWeight: "bold" }}>{dummyData.length}</Text>
+        </View>
+      </View>
+      <View style={styles.ImageContainer}>
+        <TouchableOpacity>
+          <Image source={require("../../images/Shape.png")} />
+        </TouchableOpacity>
+      </View>
+    </View>
+  );
+};
 
 export default class Slideshow extends React.Component {
   scrollX = new Animated.Value(0); // this will be the scroll location of our ScrollView
@@ -27,21 +52,16 @@ export default class Slideshow extends React.Component {
      * and then use Dimension.width-(margins from left and right)
      * This will give us a better approximation
      */
-    let position = Animated.divide(this.scrollX, 325);
+    let carouselItemWidth = (width * 90) / 100;
+    let position = Animated.divide(this.scrollX, carouselItemWidth);
 
     return (
-      <View
-        style={{
-          flex: 1,
-          justifyContent: "center",
-          alignItems: "center",
-          borderWidth: 3,
-        }}
-      >
+      <View style={styles.OuterContainer}>
+        <Heading />
         <View
           // this will bound the size of the ScrollView to be a square because
           // by default, it will expand regardless if it has a flex value or not
-          style={{ width, height: "30%", borderWidth: 3 }}
+          style={styles.scrollViewContainer}
         >
           <ScrollView
             horizontal={true}
@@ -50,8 +70,11 @@ export default class Slideshow extends React.Component {
              * correct estimate of content offset
              * But I think this can be improved after I start calculating width using Dimension API
              */
+            style={{ paddingHorizontal: (width * 6) / 100 }}
             pagingEnabled={false} // animates ScrollView to nearest multiple of it's own width
             showsHorizontalScrollIndicator={false}
+            //this is done to push last item of list to the center in container
+            contentContainerStyle={{ paddingRight: (width * 6) / 100 }}
             // the onScroll prop will pass a nativeEvent object to a function
             onScroll={Animated.event(
               // Animated.event returns a function that takes an array where the first element...
@@ -59,16 +82,22 @@ export default class Slideshow extends React.Component {
             )} // in this case we are mapping the value of nativeEvent.contentOffset.x to this.scrollX
             scrollEventThrottle={16} // this will ensure that this ScrollView's onScroll prop is called no faster than 16ms between each function call
           >
-            {photos.map((source, i) => {
+            {/* {dumyyData.map((source, i) => {
               // for every object in the photos array...
               return <CarousleItem key={i} />;
-            })}
+            })} */}
+            <CarousleItem key={1} />
+            <CarouselItem2 key={2} />
+            <CarouselItem3 key={3} />
+            <CarouselItem4 key={4} />
+            <CarouselItem5 key={5} />
+            <CarouselItem6 key={6} />
           </ScrollView>
         </View>
         <View
-          style={{ flexDirection: "row" }} // this will layout our dots horizontally (row) instead of vertically (column)
+          style={styles.dotIndicatorContainer} // this will layout our dots horizontally (row) instead of vertically (column)
         >
-          {photos.map((_, i) => {
+          {dummyData.map((_, i) => {
             // the _ just means we won't use that parameter
             let opacity = position.interpolate({
               inputRange: [i - 1, i, i + 1], // each dot will need to have an opacity of 1 when position is equal to their index (i)
@@ -82,10 +111,10 @@ export default class Slideshow extends React.Component {
                 key={i} // we will use i for the key because no two (or more) elements in an array will have the same index
                 style={{
                   opacity,
-                  height: 7,
-                  width: 7,
-                  backgroundColor: "#595959",
-                  margin: 8,
+                  height: i === dummyData.length - 1 ? 4 : 6,
+                  width: i === dummyData.length - 1 ? 4 : 6,
+                  backgroundColor: "#7C7E81",
+                  margin: 2,
                   borderRadius: 5,
                 }}
               />
@@ -96,3 +125,57 @@ export default class Slideshow extends React.Component {
     );
   }
 }
+
+const styles = StyleSheet.create({
+  OuterContainer: {
+    // flex: 1,
+    //reason we have to give height is because we can't define height of ScrollContainer
+    //so we are using this outer container to contain it's height
+    //will have to see how to handle this height when card will expand otherwise it will expand
+    //and overflow
+    height: (height * 40) / 100,
+    justifyContent: "flex-start",
+    alignItems: "center",
+    marginTop: 5,
+    backgroundColor: "#ffffff",
+    // paddingLeft: (width * 6) / 100,
+  },
+  dotIndicatorContainer: {
+    flexDirection: "row",
+    //need to adjust this
+    height: 20,
+    alignItems: "center",
+  },
+  scrollViewContainer: { width, height: (height * 25) / 100 },
+  HeaderContainer: {
+    flexDirection: "row",
+    justifyContent: "flex-start",
+    width: (width * 86) / 100,
+    marginBottom: 17,
+    marginTop: 26,
+  },
+  Header: {
+    width: "87%",
+    padding: 4,
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  headerText: {
+    fontSize: 18,
+    lineHeight: 20,
+    fontWeight: "bold",
+  },
+  ImageContainer: {
+    width: "13%",
+    justifyContent: "center",
+    alignItems: "flex-end",
+    paddingHorizontal: 7,
+  },
+  contractAmount: {
+    width: 27,
+    height: 22,
+    backgroundColor: "#f1f3f6",
+    borderRadius: 7,
+    alignItems: "center",
+  },
+});

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import {
   View,
   Text,
@@ -8,6 +8,7 @@ import {
   Dimensions,
 } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
+import * as Font from "expo-font";
 
 const width = Dimensions.get("window").width;
 const height = Dimensions.get("window").height;
@@ -15,7 +16,7 @@ const height = Dimensions.get("window").height;
 const HeaderBox = () => {
   return (
     <View style={styles.headerBox}>
-      <Text style={styles.hText}>Updated T&C's</Text>
+      <Text style={styles.hText}>Contract Breach</Text>
     </View>
   );
 };
@@ -23,7 +24,7 @@ const HeaderBox = () => {
 const Title = () => {
   return (
     <View style={styles.titleBox}>
-      <Text style={styles.titleText}>My Rivian {"\n"}Shareholding</Text>
+      <Text style={styles.titleText}>My Croyon {"\n"}Rental Agreement</Text>
     </View>
   );
 };
@@ -50,18 +51,18 @@ const ProfileContainer = () => {
         <Image source={require("../../images/user.png")} />
       </TouchableOpacity>
       <TouchableOpacity style={styles.overlapImg}>
-        <Image source={require("../../images/rivianlogo.png")} />
+        <Image source={require("../../images/user2.png")} />
       </TouchableOpacity>
     </View>
   );
 };
 
 //main component
-const CarousleItem = () => {
+const CarouselItem2 = () => {
   return (
     <View style={styles.container}>
       <LinearGradient
-        colors={["#3a3762", "#5D59CB"]}
+        colors={["#203877", "#5992BC"]}
         start={{ x: 0, y: 0 }}
         style={styles.linear}
       >
@@ -105,16 +106,18 @@ const styles = StyleSheet.create({
     height: "100%",
   },
   headerBox: {
+    // width: "35%",
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",
-    backgroundColor: "rgba(83, 255, 216,0.2)",
+    backgroundColor: "rgba(255, 77, 77,0.2)",
     borderRadius: 5,
+
     paddingVertical: 5,
     paddingHorizontal: 7,
   },
   hText: {
-    color: "#5effd8",
+    color: "#ff4d4d",
     fontSize: 12,
     lineHeight: 16,
   },
@@ -125,6 +128,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
   },
   profileContainer: {
+    // width: "30%",
     flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",
@@ -165,4 +169,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default CarousleItem;
+export default CarouselItem2;
